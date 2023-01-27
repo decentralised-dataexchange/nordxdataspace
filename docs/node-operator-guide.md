@@ -187,6 +187,10 @@ Migration scripts can also be performed during the upgrade to deal with breaking
 * Any changes in State transactions format (for example new fields added to State values) require re-creation of the state from the ledger.
 * Any changes in Requests/Replies/Messages without compatibility and versioning support.
 
+# References
+
+1. Hyperledger Indy readthedocs: https://hyperledger-indy.readthedocs.io/en/latest/ 
+
 # Commonly asked questions
 
 1. How do we or the owner of the node manage new SW updates? 
@@ -196,4 +200,3 @@ Migration scripts can also be performed during the upgrade to deal with breaking
 2. What is expected of them from an operational point of view?  
 
    (Covered in Chapter 1 & Chapter 2)
-
