@@ -4,37 +4,43 @@
       "logoUrl": "https://igrant.io/assets/images/demo-usecase/igrant.io.webp",
       "label": "iGrant.io",
       "country": "Sweden",
-      "website": "https://igrant.io/"
+      "website": "https://igrant.io/",
+      "disabled": false
     },
     "IGRANTNode2": {
       "logoUrl": "https://igrant.io/assets/images/demo-usecase/igrant.io.webp",
       "label": "iGrant.io",
       "country": "Sweden",
-      "website": "https://igrant.io/"
+      "website": "https://igrant.io/",
+      "disabled": false
     },
     "IGRANTNode3": {
       "logoUrl": "https://igrant.io/assets/images/demo-usecase/igrant.io.webp",
       "label": "iGrant.io",
       "country": "Sweden",
-      "website": "https://igrant.io/"
+      "website": "https://igrant.io/",
+      "disabled": false
     },
     "IGRANTNode4": {
       "logoUrl": "https://igrant.io/assets/images/demo-usecase/igrant.io.webp",
       "label": "iGrant.io",
       "country": "Sweden",
-      "website": "https://igrant.io/"
+      "website": "https://igrant.io/",
+      "disabled": false
     },
     "REDPILLLINPRONode5": {
       "logoUrl": "https://igrant.io/assets/images/partners/Redpill_linpro.webp",
       "label": "Redpill Linpro",
       "country": "Sweden",
-      "website": "https://www.redpill-linpro.com/en"
+      "website": "https://www.redpill-linpro.com/en",
+      "disabled": false
     },
     "RISENode6": {
       "logoUrl": "https://igrant.io/assets/images/partners/rise.webp",
       "label": "Research Institutes of Sweden (R.I.S.E)",
       "country": "Sweden",
-      "website": "https://www.ri.se/en"
+      "website": "https://www.ri.se/en",
+      "disabled": false
     }
   }
 }
