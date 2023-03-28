@@ -8,9 +8,9 @@ services:
       - "${INDY_NODE_PORT}:${INDY_NODE_PORT}"
       - "${INDY_CLIENT_PORT}:${INDY_CLIENT_PORT}"
     volumes:
-      - ./etc_indy:/etc/indy
-      - ./lib_indy:/var/lib/indy
-      - ./log_indy:/var/log/indy
+      - ./data/etc_indy:/etc/indy
+      - ./data/lib_indy:/var/lib/indy
+      - ./data/log_indy:/var/log/indy
     environment:
       - INDY_NODE_IP=${INDY_NODE_IP}
       - INDY_NODE_PORT=${INDY_NODE_PORT}
@@ -36,7 +36,7 @@ services:
      - INDY_NETWORK_NAME=${INDY_NETWORK_NAME}
      - CONTROLLER_CONTAINER=${CONTROLLER_CONTAINER}
     volumes:
-      - ./etc_indy:/etc/indy
+      - ./data/etc_indy:/etc/indy
       - ${SOCK}:/var/run/docker.sock
     logging:
         driver: "json-file"
