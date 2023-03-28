@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  indy-node:
+    image: ${IMAGE}
+    container_name: ${NODE_CONTAINER_NAME}
+    ports:
+      - "${INDY_NODE_PORT}:${INDY_NODE_PORT}"
+      - "${INDY_CLIENT_PORT}:${INDY_CLIENT_PORT}"
+    volumes:
+      - ./etc_indy:/etc/indy
+      - ./lib_indy:/var/lib/indy
+      - ./log_indy:/var/log/indy
+    environment:
+      - INDY_NODE_IP=${INDY_NODE_IP}
+      - INDY_NODE_PORT=${INDY_NODE_PORT}
+      - INDY_CLIENT_IP=${INDY_CLIENT_IP}
+      - INDY_CLIENT_PORT=${INDY_CLIENT_PORT}
+      - INDY_NETWORK_NAME=${INDY_NETWORK_NAME}
+      - INDY_NODE_NAME=${INDY_NODE_NAME}
+    logging:
+        driver: "json-file"
+        options:
+          max-file: "5"
+          max-size: "100m"      
+    env_file:
+      - .node.env
+    restart: always
+
+  indy-controller:
+    image: ${IMAGE_NAME_CONTROLLER}
+    init: true
+    container_name: ${CONTROLLER_CONTAINER}
+    environment:
+     - NODE_CONTAINER=${NODE_CONTAINER_NAME}
+     - INDY_NETWORK_NAME=${INDY_NETWORK_NAME}
+     - CONTROLLER_CONTAINER=${CONTROLLER_CONTAINER}
+    volumes:
+      - ./etc_indy:/etc/indy
+      - ${SOCK}:/var/run/docker.sock
+    logging:
+        driver: "json-file"
+        options:
+          max-file: "5"
+          max-size: "100m"      
+    restart: always
+    network_mode: "service:indy-node"
