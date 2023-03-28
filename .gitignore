@@ -1,1 +1,5 @@
 artifacts/
+.node.env
+__pycache__
+log_indy/
+lib_indy/
