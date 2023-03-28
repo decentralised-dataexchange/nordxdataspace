@@ -215,7 +215,7 @@ Migration scripts can also be performed during the upgrade to deal with breaking
 `indy-cli` command:
 - `ledger node target=<node id> alias=<nodes alias> services=`
   - Where:
-    - `<node id>` is value of the `dest` attribute in the output of `read_ledger`; see below.
+    - `<node id>` is value of the `dest` attribute in the output of `read_ledger`;
     - `<nodes alias>` is the name of the node.
 
 # References
