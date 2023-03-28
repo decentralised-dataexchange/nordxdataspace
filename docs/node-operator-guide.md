@@ -16,121 +16,153 @@ The proposed initial reference deployment of the NordXDataSpace Indy network is 
 
 ## 1.2	Node requirements
 
-* Ubuntu 16.04
+* Ubuntu 16.04+
 * 1 CPU
 * 4GB Memory
 * 30GB+ Storage
 * Ports 9701 and 9702 exposed
 * Static IP address
+* Docker
+* Docker Compose (v1)
 
-## 1.3 Creating the Indy user
+## 2.0 Add node to the existing pool
 
-Before setting up the validator node, we need to create an `indy` non-root sudo user without a password.
+## 2.1 Setup the node environment and configuration
 
-1. Login to the server as the root user
-    * `ssh root@&lt;server-public-ip>`
-2. `sudo adduser indy`
-3. `sudo usermod -aG sudo indy.`
-4. `sudo mkdir /home/indy/.ssh`
-5. `sudo chown indy:indy /home/indy/.ssh`
-6. `sudo vim /home/indy/.ssh/authorized_keys`
-7. Paste the public keys that should have access to this user and save it (`:wq`)
-8. `sudo chown indy:indy /home/indy/.ssh/authorized_keys`
-9. Open the sudo config file `sudo visudo ` and add the following line to the end of the file
-    * `indy ALL=(ALL) NOPASSWD:ALL`
+Clone the repository.
 
+```bash
+git clone https://github.com/decentralised-dataexchange/nordxdataspace.git
+```
 
-# 2.0 Add node to the existing pool
+Change directory to indy-node.
 
-## 2.1 Installing the node
+```bash
+cd indy-node
+```
 
-1. Sign in as the root user on the server
-    * `ssh root@&lt;server-public-ip>`
-2. Run the following commands
-    * `apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 68DB5E88`
-    * `echo "deb https://repo.sovrin.org/deb xenial stable" >> /etc/apt/sources.list`
-    * `apt-get update -y && sudo apt-get install -y indy-node libsodium18`
-    * `apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CE7709D068DB5E88`
-    * `add-apt-repository "deb https://repo.sovrin.org/sdk/deb xenial stable"`
-    * `apt update -y`
-    * `apt install indy-cli`
-    * `rm -r /etc/indy /var/lib/indy`
-    * `exit`
-3. Sign in as the indy user on the server
-    * `ssh indy@&lt;server-public-ip>`
-4. Run the following commands
-    * `create_dirs.sh`
-    * `vim /etc/indy/indy_config.py`
-        * Update the `NETWORK_NAME` to `NETWORK_NAME = "sandbox"`
-    * `init_indy_keys --name &lt;alias> --seed &lt;seed>`
-        * Replace `&lt;seed>` with the Validator node seed generated in section 2.
-        * Replace `&lt;alias>` with the Validator alias
-        * Store the output of the command. The seed in the output should be protected from disclosure
-    * `vim /var/lib/indy/sandbox/domain_transactions_genesis`
-        * Paste the contents of [https://raw.githubusercontent.com/L3-iGrant/datawallet-metadata/main/domain_transactions_genesis](https://raw.githubusercontent.com/L3-iGrant/datawallet-metadata/main/domain_transactions_genesis)
-    * `vim /var/lib/indy/sandbox/pool_transactions_genesis`
-        * Paste the contents of [https://raw.githubusercontent.com/L3-iGrant/datawallet-metadata/main/pool_transactions_genesis](https://raw.githubusercontent.com/L3-iGrant/datawallet-metadata/main/pool_transactions_genesis)
-5. Start the indy cli (by running `indy-cli`) and execute the following commands
-    * `wallet create &lt;name> key=&lt;steward-wallet-key>`
-        * Replace `&lt;name>` with any name, make sure to write down
-        * Replace `&lt;steward-wallet-key>` with the Steward wallet key generated in section 2.
-    * `wallet open &lt;name> key=&lt;steward-wallet-key>`
-    * `pool create sandbox gen_txn_file=/var/lib/indy/sandbox/pool_transactions_genesis`
-    * `pool connect sandbox`
-    * `did new seed=&lt;steward-key-seed>`
-        * Replace `&lt;steward-key-seed>` with the Steward key seed generated in section 2.
-        * Store the output of the command. The did and verkey are your steward did and verkey
+Build docker images
 
+```bash
+make all
+```
 
-## 2.2. Registering the steward DID
+Change directory to docker-compose.
 
-Steward DID created in the last step of the previous section must be registered to the ledger. Provide iGrant.io trustee with steward DID and verkey. You will be notified through email or other out-of-band communication methods that the DID is registered to the ledger.
+```bash
+cd docker-compose
+```
 
+Generate random 32 byte seed and store .node.env file. Keep a copy stored in secure location.
 
-## 2.3 Add node to the pool
+```
+./scripts/generate_random_seeds.sh
+```
 
-Once the steward has been added to the ledger, we can add the validator node and start the node.
+Update the node name in .env file. Replace `NewNodeName` with the appropriate node name. Node name should be of the format <ORG_NAME_IN_CAPITALS>Node<NUMBER> for e.g for Google, it can be GoogleNode6. Do consult with iGrant.io trustee in regards to the same.
 
-1. Sign in as the indy user on the server
-    * `ssh indy@&lt;server-public-ip>`
-2. Start the indy cli (by running `indy-cli`) and execute the following commands
-    * `wallet create &lt;name> key=&lt;steward-wallet-key>`
-    * `wallet open &lt;name> key=&lt;steward-wallet-key>`
-        * Replace `&lt;name>` and `&lt;steward-wallet-key>` with the values used when the wallet was created
-    * `pool connect sandbox`
-    * `did use &lt;steward-did>`
-        * Replace `&lt;steward-did>` with the steward did
-    * `ledger node target=&lt;validator-verkey> node_ip=&lt;node-public-ip> node_port=9701 client_ip=&lt;node-public-ip> client_port=9702 alias=&lt;validator-alias> services=VALIDATOR blskey=&lt;bls-public-key> blskey_pop=&lt;bls-proof-of-possesion>`
-        * Replace `&lt;validator-verkey>` with the value of `Verification key is &lt;validator-verkey>` from the `init_indy_keys` command
-        * Replace `&lt;node-public-id>` with the public ip of the node
-        * Replace `&lt;validator-alias>` with the value of `Node-stack name is &lt;validator-alias>` from the `init_indy_keys` command
-        * Replace `&lt;bls-public-key>` with the value of `BLS Public key is &lt;bls-public-key>` from the `init_indy_keys` command
-        * Replace `&lt;bls-proof-of-possesion>` with the value of `Proof of possession for BLS key is &lt;bls-proof-of-possesion>` from the `init_indy_keys` command
-    * `exit` - to exit from the indy-cli
-3. Run the following commands to start the node
-    * `vim /etc/indy/indy.env`
-        * Paste the contents of the Indy Environment File in section 3.5.1
-    * `vim /etc/indy/node_control.conf`
-        * Paste the contents of the Indy Node Control Configuration file in section 3.5.2
-    * `vim /etc/systemd/system/indy-node.service`
-        * Change the `User` and `Group` to the ssh username.
-        * This is only needed if you don’t use the `indy` user as described in section 1.1 (default is `indy`)
-    * `sudo systemctl enable indy-node-control.service`
-    * `sudo systemctl start indy-node-control.service`
-    * `sudo systemctl enable indy-node.service`
-    * `sudo systemctl start indy-node.service`
+```
+sed -i 's/INDY_NODE_NAME=REDPILLLINPRONode5/INDY_NODE_NAME=NewNodeName/g' .env
+```
 
-## 2.4 Check if the node is up and running
+## 2.2 Obtain BLS, BLS proof of possession, client and node public keys
 
-1. Check if the log file exists
-    * `cat /var/log/indy/sandbox/&lt;validator-alias>.log`
-        * Replace `&lt;validator-alias>` with the value of `Node-stack name is &lt;validator-alias>` from the `init_indy_keys` command
-        * Make sure to check for the `connections changed from` and `updated validators list to` lines (using e.g. grep)
-2. Check the status of the validator node
-    * `sudo validator-info`
-    * You should see your node as part of the `Reachable Hosts`
-3. Get the updated pool genesis transactions file
-    * `read_ledger --type pool`
+Run `docker-compose up --scale indy-controller=0`. You will find the similar information as the following at the start of the logs:
+
+```
+...
+indy_node          | Public key is ...
+indy_node          | Verification key is ...
+indy_node          | BLS Public key is ...
+indy_node          | Proof of possession for BLS key is ...
+indy_node          | [OK]	 Init complete
+...
+```
+
+Stop the container(`CTRL-C`). Copy the above public information and as these information are required to register the node to the pool ledger in Chapter 2.5.
+
+Move the `pool_transactions_genesis` and `domain_transactions_genesis` from `data/sandbox` folder to `data/lib_indy/sandbox` folder.
+
+```
+sudo cp data/sandbox/pool_transactions_genesis data/lib_indy/sandbox
+```
+
+```
+sudo cp data/sandbox/domain_transactions_genesis data/lib_indy/sandbox
+```
+
+## 2.3 Create the steward DID
+
+Node operator is required to create a DID. This can happen independent of server running the node, i.e. can be executed in an external machine with `indy-cli` installed. 
+
+Note: Additionally node operator can share the seed from earlier step to the trustee who can then perform steps in Chapter 2.4 and Chapter 2.5. This approach is not recommended for production environments as node operator DID is exposed to the trustee.
+
+Start indy-cli.
+
+```bash
+indy-cli
+```
+
+Create a wallet for node operator.
+
+```bash
+indy> wallet create nodeoperatorwallet key=nodeoperatorwalletkey
+Wallet "nodeoperatorwallet" has been created
+```
+
+Open the wallet.
+
+```bash
+indy> wallet open nodeoperatorwallet key=nodeoperatorwalletkey
+Wallet "nodeoperatorwallet" has been opened
+```
+
+Create a did for node operator. Replace `<SEED>` with seed from previous step.
+
+```bash
+nodeoperatorwallet:indy> did new seed=<SEED> metadata=steward
+Did "UWZuggH9xHcB9RVzArrPXM" has been created with "~4fZGAtr5wEbtVqaL19vvQo" verkey
+Metadata has been saved for DID "UWZuggH9xHcB9RVzArrPXM"
+```
+
+## 2.4 Register the steward DID
+
+Steward DID created in the previous chapter must be registered to the ledger. Provide iGrant.io trustee with steward DID and verkey. You will be notified through email or other out-of-band communication methods that the DID is registered to the ledger.
+
+## 2.5 Register the new node to the pool ledger
+
+Start `indy-cli` and open wallet created in the previous step. Execute the following:
+
+```bash
+indy> did use <STEWARD_DID>
+```
+
+Replace the values with information from previous steps.
+
+```bash
+indy> ledger node target=<VERIFICATION_KEY> alias=<NODE_ALIAS> node_ip=<PUBLIC_IP_ADDRESS> node_port=9701 client_port=9702 client_ip=<PUBLIC_IP_ADDRESS> services=VALIDATOR blskey=<BLS_PUBLIC_KEY> blskey_pop=<BLS_PROOF_OF_POSSESSION_KEY> send=true
+```
+
+Note: Make sure the information is accurate.
+
+## 2.6 Run the node
+
+```bash
+docker-compose up -d
+```
+
+Check the logs to ensure the node is running.
+
+```bash
+docker logs -f indy_node
+```
+
+## 2.7 Update organisation details
+
+Fork the repository and raise a PR against the main branch after updating the node operator details at below location.
+
+https://github.com/decentralised-dataexchange/nordxdataspace/blob/main/node-operators/list.json
+
 
 # 3.0 Pool upgrade guideline
 
@@ -158,45 +190,6 @@ Migration scripts can also be performed during the upgrade to deal with breaking
     * `success` or `fail` action: after upgrading the node to log the upgrade result.
 * `NODE_UPGRADE` transaction is a common transaction (written to config ledger), so consensus is required.
 
-
-## 3.3 Node Control Tool
-
-* Upgrade is performed by a `node-control-tool`.
-* See <code>[node_control_tool.py](https://github.com/hyperledger/indy-node/blob/main/docs/indy_node/utils/node_control_tool.py)</code>.
-* On Ubuntu it's installed as a systemd service (<code>indy-node-control</code>) in addition to the node service (<code>indy-node</code>).
-* <code>indy-node-control</code> is executed from the <code>root</code> user.
-* When upgrade time for the node comes, it sends a message to node-control-tool.
-* The node-control-tool then does the following:
-    * stops <code>indy-node</code> service;
-    * upgrades <code>indy-node</code> package (<code>apt-get install</code> on Ubuntu);
-    * back-ups node data (ledger, etc.);
-    * runs migration scripts (see <code>[migration_tool.py](https://github.com/hyperledger/indy-node/blob/main/docs/indy_node/utils/migration_tool.py)</code>);
-    * starts <code>indy-node</code> service;
-    * restarts <code>indy-node-control</code> service.
-* If an upgrade fails for some reason, node-control-tool tries to restore the data (ledger) from back-up and revert to the version of the code before upgrade.
-
-## 3.4 Migrations
-
-* Although we must try keeping backward-compatibility between the versions, it may be possible that there are some (for example, changes in ledger and state data format, re-branding, etc.).
-* We can write migration scripts to support this kind of breaking changes and perform necessary steps for data migration and/or running some scripts.
-* The migration should go to the `data/migration` folder under the package name (so this is `data/migration/deb` on Ubuntu).
-
-## 3.5 When to Run Forced Upgrades
-
-* Any changes in Ledger transactions format leading to changes in transactions root hash.
-* Any changes in State transactions format (for example new fields added to State values) require re-creation of the state from the ledger.
-* Any changes in Requests/Replies/Messages without compatibility and versioning support.
-
 # References
 
-1. Hyperledger Indy readthedocs: https://hyperledger-indy.readthedocs.io/en/latest/ 
-
-# Commonly asked questions
-
-1. How do we or the owner of the node manage new SW updates? 
-
-   (Covered in Chapter 3)
-
-2. What is expected of them from an operational point of view?  
-
-   (Covered in Chapter 1 & Chapter 2)
+1. Hyperledger Indy documentation: https://hyperledger-indy.readthedocs.io/en/latest/ 
