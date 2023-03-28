@@ -4,7 +4,23 @@
 
 # Table of contents
 
-[TOC]
+- [User manual for node operators or stewards](#user-manual-for-node-operators-or-stewards)
+- [Table of contents](#table-of-contents)
+- [1.0 Prerequisites](#10-prerequisites)
+  - [1.1	Reference deployment](#11reference-deployment)
+  - [1.2	Node requirements](#12node-requirements)
+  - [2.0 Add node to the existing pool](#20-add-node-to-the-existing-pool)
+  - [2.1 Setup the node environment and configuration](#21-setup-the-node-environment-and-configuration)
+  - [2.2 Obtain BLS, BLS proof of possession, client and node public keys](#22-obtain-bls-bls-proof-of-possession-client-and-node-public-keys)
+  - [2.3 Create the steward DID](#23-create-the-steward-did)
+  - [2.4 Register the steward DID](#24-register-the-steward-did)
+  - [2.5 Register the new node to the pool ledger](#25-register-the-new-node-to-the-pool-ledger)
+  - [2.6 Run the node](#26-run-the-node)
+  - [2.7 Update organisation details](#27-update-organisation-details)
+- [3.0 Pool upgrade guideline](#30-pool-upgrade-guideline)
+  - [3.1 Pool Upgrade Transaction](#31-pool-upgrade-transaction)
+  - [3.2 Node Upgrade Transaction](#32-node-upgrade-transaction)
+- [References](#references)
 
 # 1.0 Prerequisites
 
