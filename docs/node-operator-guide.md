@@ -20,6 +20,8 @@
 - [3.0 Pool upgrade guideline](#30-pool-upgrade-guideline)
   - [3.1 Pool Upgrade Transaction](#31-pool-upgrade-transaction)
   - [3.2 Node Upgrade Transaction](#32-node-upgrade-transaction)
+- [4.0 Troubleshooting](#40-troubleshooting)
+  - [Remove a Node from a Pool](#remove-a-node-from-a-pool)
 - [References](#references)
 
 # 1.0 Prerequisites
@@ -205,6 +207,16 @@ Migration scripts can also be performed during the upgrade to deal with breaking
     * `in_progress` action: just before start of the Upgrade (that is re-starting the node and applying a new package) to log that Upgrade started on the node.
     * `success` or `fail` action: after upgrading the node to log the upgrade result.
 * `NODE_UPGRADE` transaction is a common transaction (written to config ledger), so consensus is required.
+
+# 4.0 Troubleshooting
+
+## Remove a Node from a Pool
+
+`indy-cli` command:
+- `ledger node target=<node id> alias=<nodes alias> services=`
+  - Where:
+    - `<node id>` is value of the `dest` attribute in the output of `read_ledger`; see below.
+    - `<nodes alias>` is the name of the node.
 
 # References
 
