@@ -35,10 +35,10 @@
       "website": "https://www.redpill-linpro.com/en",
       "disabled": false
     },
-    "MYDATANode6": {
-      "logoUrl": "https://igrant.io/assets/images/partners/mydataorg_logo.png",
-      "label": "MyData Global",
-      "country": "Finland",
+    "MYDATAHUBSWEDENNode6": {
+      "logoUrl": "https://storage.googleapis.com/igrant-api-images/MyData%20Hub%20Sweden%20Secondary.png",
+      "label": "MyData Sweden",
+      "country": "Sweden",
       "website": "https://www.mydata.org/",
       "disabled": false
     },
