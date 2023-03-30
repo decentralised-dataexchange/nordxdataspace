@@ -35,7 +35,14 @@
       "website": "https://www.redpill-linpro.com/en",
       "disabled": false
     },
-    "RISENode6": {
+    "MYDATANode6": {
+      "logoUrl": "https://igrant.io/assets/images/partners/mydataorg_logo.png",
+      "label": "MyData Global",
+      "country": "Finland",
+      "website": "https://www.mydata.org/",
+      "disabled": false
+    },
+    "RISENode7": {
       "logoUrl": "https://igrant.io/assets/images/partners/rise.webp",
       "label": "Research Institutes of Sweden (R.I.S.E)",
       "country": "Sweden",
