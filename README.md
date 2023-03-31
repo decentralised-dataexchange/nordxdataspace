@@ -21,9 +21,9 @@ This repository contains the nordxdataspace indy ledger network management softw
 
 The indy based trust anchor was originally used by Data4Diabetes - Swedish Health Data Space pilot with diabetes data using a MyData Operator infrastructure, funded by Vinnova. Vinnova or the Swedish Agency for Innovation Systems, is the Swedish government agency that administers state funding for research and development.
 
-## Release status (Specifications deliverables)
+## Release status
 
-The first version of the DA specification is released and implemented. 
+The NordXDataspace is now live, with a live indy network with validator nodes. 
                                                                                                                                       |
 ## Other resources
 
