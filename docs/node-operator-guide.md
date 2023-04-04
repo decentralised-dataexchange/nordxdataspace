@@ -20,7 +20,8 @@
 - [3.0 Pool upgrade guideline](#30-pool-upgrade-guideline)
   - [3.1 Pool Upgrade Transaction](#31-pool-upgrade-transaction)
   - [3.2 Node Upgrade Transaction](#32-node-upgrade-transaction)
-- [4.0 Troubleshooting](#40-troubleshooting)
+- [4.0 Indy CLI](#40-indy-cli)
+- [5.0 Troubleshooting](#50-troubleshooting)
   - [Remove a Node from a Pool](#remove-a-node-from-a-pool)
 - [References](#references)
 
@@ -111,7 +112,7 @@ sudo cp data/sandbox/domain_transactions_genesis data/lib_indy/sandbox
 
 ## 2.3 Create the steward DID
 
-Node operator is required to create a DID. This can happen independent of server running the node, i.e. can be executed in an external machine with `indy-cli` installed. 
+Node operator is required to create a DID. This can happen independent of server running the node, i.e. can be executed in an external machine with `indy-cli` (Refer [Chapter 4.0](#40-indy-cli) to execute using docker) installed. 
 
 Note: Additionally node operator can share the seed from earlier step to the trustee who can then perform steps in Chapter 2.4 and Chapter 2.5. This approach is not recommended for production environments as node operator DID is exposed to the trustee.
 
@@ -150,6 +151,14 @@ Steward DID created in the previous chapter must be registered to the ledger. Pr
 ## 2.5 Register the new node to the pool ledger
 
 Start `indy-cli` and open wallet created in the previous step. Execute the following:
+
+```bash
+indy> pool create nordxdataspace gen_txn_file=pool_transactions_genesis
+```
+
+```bash
+indy> pool connect nordxdataspace
+```
 
 ```bash
 indy> did use <STEWARD_DID>
@@ -208,7 +217,27 @@ Migration scripts can also be performed during the upgrade to deal with breaking
     * `success` or `fail` action: after upgrading the node to log the upgrade result.
 * `NODE_UPGRADE` transaction is a common transaction (written to config ledger), so consensus is required.
 
-# 4.0 Troubleshooting
+# 4.0 Indy CLI
+
+> Note: Remember to execute `make-all` command to build the image.
+
+Prepare the local folder for storing `indy-cli` data by executing the following commands:
+
+```
+sudo chown -R 1000:root data/indy_client
+```
+
+```
+chmod -R ug+rw data/indy_client
+```
+
+Execute the following command from `docker-compose` folder to run `indy-cli`.
+
+```
+docker run -v ./data/indy_client:/home/indy/.indy_client -v ./data/sandbox/pool_transactions_genesis:/home/indy/pool_transactions_genesis --rm -it nordxdataspace/indy_cli indy-cli
+```
+
+# 5.0 Troubleshooting
 
 ## Remove a Node from a Pool
 
