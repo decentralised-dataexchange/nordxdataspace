@@ -160,11 +160,13 @@ indy> pool create nordxdataspace gen_txn_file=pool_transactions_genesis
 indy> pool connect nordxdataspace
 ```
 
+Replace the `<STEWARD_DID>` with information from previous step.
+
 ```bash
 indy> did use <STEWARD_DID>
 ```
 
-Replace the values with information from previous steps.
+Replace `<VERIFICATION_KEY>`, `<NODE_ALIAS>`, `<PUBLIC_IP_ADDRESS>`, `<BLS_PUBLIC_KEY>` and `<BLS_PROOF_OF_POSSESSION_KEY>` with information from previous steps.
 
 ```bash
 indy> ledger node target=<VERIFICATION_KEY> alias=<NODE_ALIAS> node_ip=<PUBLIC_IP_ADDRESS> node_port=9701 client_port=9702 client_ip=<PUBLIC_IP_ADDRESS> services=VALIDATOR blskey=<BLS_PUBLIC_KEY> blskey_pop=<BLS_PROOF_OF_POSSESSION_KEY> send=true
