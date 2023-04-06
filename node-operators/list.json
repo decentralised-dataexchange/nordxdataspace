@@ -7,13 +7,6 @@
       "website": "https://igrant.io/",
       "disabled": false
     },
-    "IGRANTNode2": {
-      "logoUrl": "https://igrant.io/assets/images/demo-usecase/igrant.io.webp",
-      "label": "iGrant.io",
-      "country": "Sweden",
-      "website": "https://igrant.io/",
-      "disabled": false
-    },
     "REDPILLLINPRONode5": {
       "logoUrl": "https://storage.googleapis.com/igrant-api-images/nxd-images/redpill-linpro-logo.png",
       "label": "Redpill Linpro",
