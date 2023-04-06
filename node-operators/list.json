@@ -1,7 +1,7 @@
 {
   "nodeOperators": {
     "IGRANTNode1": {
-      "logoUrl": "https://igrant.io/assets/images/demo-usecase/igrant.io.webp",
+      "logoUrl": "https://storage.googleapis.com/igrant-api-images/nxd-images/igrant.io-logo.png",
       "label": "iGrant.io",
       "country": "Sweden",
       "website": "https://igrant.io/",
@@ -14,36 +14,22 @@
       "website": "https://igrant.io/",
       "disabled": false
     },
-    "IGRANTNode3": {
-      "logoUrl": "https://igrant.io/assets/images/demo-usecase/igrant.io.webp",
-      "label": "iGrant.io",
-      "country": "Sweden",
-      "website": "https://igrant.io/",
-      "disabled": false
-    },
-    "IGRANTNode4": {
-      "logoUrl": "https://igrant.io/assets/images/demo-usecase/igrant.io.webp",
-      "label": "iGrant.io",
-      "country": "Sweden",
-      "website": "https://igrant.io/",
-      "disabled": false
-    },
     "REDPILLLINPRONode5": {
-      "logoUrl": "https://igrant.io/assets/images/partners/Redpill_linpro.webp",
+      "logoUrl": "https://storage.googleapis.com/igrant-api-images/nxd-images/redpill-linpro-logo.png",
       "label": "Redpill Linpro",
       "country": "Sweden",
       "website": "https://www.redpill-linpro.com/en",
       "disabled": false
     },
     "MYDATAHUBSWEDENNode6": {
-      "logoUrl": "https://storage.googleapis.com/igrant-api-images/MyData%20Hub%20Sweden%20Secondary.png",
+      "logoUrl": "https://storage.googleapis.com/igrant-api-images/nxd-images/mydata-sweden-logo.png",
       "label": "MyData Sweden",
       "country": "Sweden",
       "website": "https://www.mydata.org/",
       "disabled": false
     },
     "RISENode7": {
-      "logoUrl": "https://igrant.io/assets/images/partners/rise.webp",
+      "logoUrl": "https://storage.googleapis.com/igrant-api-images/nxd-images/rise-logo.png",
       "label": "Research Institutes of Sweden (RISE)",
       "country": "Sweden",
       "website": "https://www.ri.se/en",
